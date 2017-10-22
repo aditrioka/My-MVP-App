@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import id.aditrioka.mymvpapp.R;
 import id.aditrioka.mymvpapp.root.App;
 
@@ -17,6 +19,9 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
     private EditText etFirstName;
     private EditText etLastName;
     private Button btnSubmit;
+
+    @Inject
+    LoginActivityMVP.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,8 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.setView(this);
+        presenter.getCurrentUser();
     }
 
     @Override
@@ -79,6 +86,8 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
                 Log.d(TAG, "button clicked");
                 Log.d(TAG, "first name: " + etFirstName.getText());
                 Log.d(TAG, "last name: " + etLastName.getText());
+
+                presenter.submitButtonClicked();
             }
         });
     }

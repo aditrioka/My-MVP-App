@@ -5,13 +5,24 @@ package id.aditrioka.mymvpapp.login;
  */
 
 public class MemoryRepository implements LoginRepository {
+    private User user;
+
     @Override
     public void setUser(User user) {
-
+        if (user == null) {
+            user = getUser();
+        }
+        this.user = user;
     }
 
     @Override
     public User getUser() {
-        return null;
+        if (user == null) {
+            User user = new User("Adi", "Trioka");
+            user.setId(0);
+            return user;
+        } else {
+            return this.user;
+        }
     }
 }

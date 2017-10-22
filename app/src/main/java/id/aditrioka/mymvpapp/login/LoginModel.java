@@ -13,11 +13,11 @@ public class LoginModel implements LoginActivityMVP.Model {
 
     @Override
     public void saveUser(String firstName, String lastName) {
-
+        repository.setUser(new User(firstName, lastName));
     }
 
     @Override
     public User getUser() {
-        return null;
+        return repository.getUser();
     }
 }
