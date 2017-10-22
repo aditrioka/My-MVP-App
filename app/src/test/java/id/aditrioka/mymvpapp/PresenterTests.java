@@ -9,6 +9,9 @@ import id.aditrioka.mymvpapp.login.LoginModel;
 import id.aditrioka.mymvpapp.login.User;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -35,10 +38,24 @@ public class PresenterTests {
         presenter.setView(mockView);
     }
 
+//    @Test
+//    public void noInteractionWithView() {
+//        presenter.getCurrentUser();
+//
+//        verifyZeroInteractions(mockView);
+//    }
+
     @Test
-    public void noInteractionWithView() {
+    public void loadTheUserFromTheRepositoryWhenValidUserIsPresent() {
+        when(mockModel.getUser()).thenReturn(user);
         presenter.getCurrentUser();
 
-        verifyZeroInteractions(mockView);
+        // verify model interactions
+        verify(mockModel, times(1)).getUser();
+
+        // verify view interactions
+        verify(mockView, times(1)).setFirstName("Adi");
+        verify(mockView, times(1)).setLastName("Trioka");
+        verify(mockView, never()).showUserNotAvailable();
     }
 }
