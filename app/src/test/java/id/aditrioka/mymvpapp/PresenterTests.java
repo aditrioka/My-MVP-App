@@ -58,4 +58,57 @@ public class PresenterTests {
         verify(mockView, times(1)).setLastName("Trioka");
         verify(mockView, never()).showUserNotAvailable();
     }
+
+    @Test
+    public void shouldShowErrorMessageWhenUserIsNull() {
+        when(mockModel.getUser()).thenReturn(null);
+        presenter.getCurrentUser();
+
+        // verify model interactions
+        verify(mockModel, times(1)).getUser();
+
+        // verify view interactions
+        verify(mockView, never()).setFirstName("Adi");
+        verify(mockView, never()).setLastName("Trioka");
+        verify(mockView, times(1)).showUserNotAvailable();
+    }
+
+    @Test
+    public void shouldShowErrorMessageWhenFieldAreEmpty() {
+        // set up the view mock
+        when(mockView.getFirstName()).thenReturn("");
+        presenter.submitButtonClicked();
+
+        verify(mockView, times(1)).getFirstName();
+        verify(mockView, never()).getLastName();
+        verify(mockView, times(1)).showError();
+
+        // tell mockView to return a value for first name and and an empty last name
+        when(mockView.getFirstName()).thenReturn("Adi");
+        when(mockView.getLastName()).thenReturn("");
+
+        presenter.submitButtonClicked();
+
+        verify(mockView, times(2)).getFirstName(); // called now and called before
+        verify(mockView, times(1)).getLastName(); // called only once
+        verify(mockView, times(2)).showError(); //called now and called before
+    }
+
+    @Test
+    public void shouldBeAbleToSaveAValidUser() {
+        when(mockView.getFirstName()).thenReturn("Adi");
+        when(mockView.getLastName()).thenReturn("Trioka");
+
+        presenter.submitButtonClicked();
+
+        // called two times in submitButtonClicked
+        verify(mockView, times(2)).getFirstName();
+        verify(mockView, times(2)).getLastName();
+
+        // make sure the repository saved the user
+        verify(mockModel, times(1)).saveUser("Adi", "Trioka");
+
+        // make sure the view show message
+        verify(mockView, times(1)).showUserSaved();
+    }
 }
