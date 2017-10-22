@@ -23,22 +23,14 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ((App) getApplication()).getComponent().inject(this);
+
         initializeViews();
     }
 
-    private void initializeViews() {
-        etFirstName = (EditText) findViewById(R.id.et_first_name);
-        etLastName = (EditText) findViewById(R.id.et_last_name);
-        btnSubmit = (Button) findViewById(R.id.btn_submit);
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "button clicked");
-                Log.d(TAG, "first name: " + etFirstName.getText());
-                Log.d(TAG, "last name: " + etLastName.getText());
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -74,5 +66,20 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
     @Override
     public void showUserNotAvailable() {
         Toast.makeText(this, getString(R.string.msg_user_not_available), Toast.LENGTH_SHORT).show();
+    }
+
+    private void initializeViews() {
+        etFirstName = (EditText) findViewById(R.id.et_first_name);
+        etLastName = (EditText) findViewById(R.id.et_last_name);
+        btnSubmit = (Button) findViewById(R.id.btn_submit);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "button clicked");
+                Log.d(TAG, "first name: " + etFirstName.getText());
+                Log.d(TAG, "last name: " + etLastName.getText());
+            }
+        });
     }
 }
