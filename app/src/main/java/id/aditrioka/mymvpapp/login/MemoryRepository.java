@@ -20,7 +20,7 @@ public class MemoryRepository implements LoginRepository {
         if (user == null) {
             User user = new User("Adi", "Trioka");
             user.setId(0);
-            return user;
+            return this.user = user;
         } else {
             return this.user;
         }
